@@ -9,19 +9,35 @@ export default function DashboardPage() {
     totalProducts: 0,
     lowStock: 0,
     totalAsset: 0,
+    profit: 0,
   });
 
   useEffect(() => {
-    const getStats = async () => {
-      const { data } = await supabase.from('products').select('*');
-      if (data) {
-        const total = data.length;
-        const low = data.filter(item => item.stock < 10).length;
-        const asset = data.reduce((sum, item) => sum + (item.cost_price * item.stock), 0);
-        
-        setStats({ totalProducts: total, lowStock: low, totalAsset: asset });
-      }
-    };
+ // Tambahkan perhitungan profit di dalam useEffect yang sudah ada
+const getStats = async () => {
+  const { data } = await supabase.from('products').select('*');
+  if (data) {
+    const total = data.length;
+    const low = data.filter(item => item.stock < 10).length;
+    
+    // Hitung Total Aset berdasarkan harga modal
+    const asset = data.reduce((sum, item) => sum + (item.cost_price * item.stock), 0);
+    
+    // Hitung Potensi Keuntungan jika semua stok terjual
+    const potentialProfit = data.reduce((sum, item) => 
+      sum + ((item.selling_price - item.cost_price) * item.stock), 0);
+    
+    setStats({ 
+      totalProducts: total, 
+      lowStock: low, 
+      totalAsset: asset,
+      profit: potentialProfit 
+    });
+  }
+};
+    
+
+    
     getStats();
   }, []);
 
@@ -29,6 +45,7 @@ export default function DashboardPage() {
     { title: "Total Produk", value: stats.totalProducts, icon: <Package />, color: "bg-blue-500" },
     { title: "Stok Menipis", value: stats.lowStock, icon: <AlertTriangle />, color: "bg-red-500" },
     { title: "Total Aset Toko", value: `Rp ${stats.totalAsset.toLocaleString()}`, icon: <TrendingUp />, color: "bg-green-500" },
+    { title: "Estimasi Profit", value: `Rp ${stats.profit?.toLocaleString()}`, icon: <TrendingUp />, color: "bg-orange-500" },
   ];
 
   return (
