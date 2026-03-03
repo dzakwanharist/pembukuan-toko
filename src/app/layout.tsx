@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { LayoutDashboard, Package, ShoppingCart, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Settings, LogOut, BookAIcon } from "lucide-react";
 import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,7 +22,7 @@ export default function RootLayout({
         {/* SIDEBAR */}
         <aside className="w-64 bg-white border-r flex flex-col fixed h-full">
           <div className="p-6 border-b">
-            <h2 className="text-xl font-bold text-blue-600 tracking-tight">DChezeeCake</h2>
+            <h2 className="text-xl font-bold text-blue-600 tracking-tight">Toko DChezeeCake</h2>
           </div>
           
           <nav className="flex-1 p-4 space-y-2">
@@ -34,6 +34,9 @@ export default function RootLayout({
             </Link>
             <Link href="/sales" className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">
               <ShoppingCart size={20} /> <span className="font-medium">Kasir</span>
+            </Link>
+            <Link href="/report" className="flex items-center gap-3 p-3 text-gray-600 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">
+              <BookAIcon size={20} /> <span className="font-medium">Laporan</span>
             </Link>
           </nav>
 
